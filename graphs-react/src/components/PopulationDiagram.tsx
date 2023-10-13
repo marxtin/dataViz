@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import AxisTop from "./AxisTop";
-import AxisBottom from "./AxisLeft";
-import Marks from "./Marks";
+import AxisTop from "./diagram/AxisTop";
+import AxisBottom from "./diagram/AxisLeft";
+import Bars from "./diagram/Bars";
 import { PopulationDataByCountryEntry } from "@/types";
 import { scaleLinear, scaleBand, max, format } from "d3";
+import { useModalStore } from "@/lib/useModal";
 
 export interface PopulationDiagramProps {
   data: PopulationDataByCountryEntry[];
@@ -14,6 +15,9 @@ export interface PopulationDiagramProps {
 const PopulationDiagram: React.FC<PopulationDiagramProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const { isOpen, data: modalData } = useModalStore();
+
+  const countryData = modalData as PopulationDataByCountryEntry;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -66,19 +70,27 @@ const PopulationDiagram: React.FC<PopulationDiagramProps> = ({ data }) => {
           >
             Population
           </text>
-          <Marks
+          <Bars
             data={data}
             xScale={xScale}
             yScale={yScale}
             xVal={xVal}
             yVal={yVal}
-            toolTipFormat={tickFormat}
           />
         </g>
       </svg>
+      {isOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>{countryData?.Country}</h3>
+            <p>
+              Population: {(countryData?.Population * 1000).toLocaleString()}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default PopulationDiagram;
-
