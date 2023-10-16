@@ -10,18 +10,26 @@
   },
   "dependencies": {
     "@types/classnames": "^2.3.1",
-    "@types/d3": "^7.4.1",
+    "@types/mongodb": "^4.0.7",
+    "@types/styled-components": "^5.1.28",
+    "@types/topojson-client": "^3.1.2",
     "classnames": "^2.3.2",
     "d3": "^7.8.5",
+    "mongodb": "^6.1.0",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
+    "styled-components": "^6.1.0",
+    "topojson": "^3.0.2",
+    "topojson-client": "^3.1.0",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/topojson": "^3.2.4",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "typescript": "^5"

@@ -19,11 +19,23 @@ const PopulationDiagram: React.FC<PopulationDiagramProps> = ({ data }) => {
 
   const countryData = modalData as PopulationDataByCountryEntry;
 
-  useEffect(() => {
+  const updateSize = () => {
     if (containerRef.current) {
       const { width, height } = containerRef.current.getBoundingClientRect();
       setContainerSize({ width, height });
     }
+  };
+
+  useEffect(() => {
+    updateSize(); // Initial size update
+
+    // Add resize event listener
+    window.addEventListener("resize", updateSize);
+
+    // Cleanup: remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", updateSize);
+    };
   }, []);
 
   const { width, height } = containerSize;

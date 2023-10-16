@@ -1,16 +1,16 @@
 import Head from "next/head";
-import { fetchWorldPopulationByCountryData } from "../api/fetch";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import { fetchFromMongoDb } from "@/api/fetchMongo";
 
-type PopulationDataByCountryEntry = {
-  Country: string;
-  Population: number;
-  [key: string]: string | number;
-};
+const NoSSRComponentWorldMap = dynamic(
+  () => import("@/components/World"),
+  {
+    ssr: false,
+  }
+);
 
-export type WorldDataEntry = {
+export type EarthquakeDataEntry = {
   time: Date;
   latitude: number;
   longitude: number;
@@ -18,10 +18,12 @@ export type WorldDataEntry = {
 };
 
 type HomeProps = {
-  data: PopulationDataByCountryEntry[] | WorldDataEntry[];
+  data: EarthquakeDataEntry[];
 };
 
 const Home: React.FC<HomeProps> = async () => {
+  const earthQuakes = await fetchFromMongoDb();
+
   return (
     <div>
       <Head>
@@ -33,7 +35,7 @@ const Home: React.FC<HomeProps> = async () => {
       </Head>
       <main>
         <Suspense fallback={<div>Loading...</div>}>
-          <p>Hi</p>
+          <NoSSRComponentWorldMap data={earthQuakes} />
         </Suspense>
       </main>
     </div>

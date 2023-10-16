@@ -24,27 +24,33 @@ const Bars = <T,>({
 
   return (
     <>
-      {data.map((d) => (
-        <g key={yVal(d)}>
-          <rect
-            x={0}
-            y={yScale(yVal(d))}
-            width={xScale(xVal(d))}
-            height={yScale.bandwidth()}
-            className={classNames("mark", {
-              highlighted: yVal(d) === hoveredItem,
-            })}
-            onMouseEnter={() => {
-              setHoveredItem(yVal(d));
-              openModal(d);
-            }}
-            onMouseLeave={() => {
-              setHoveredItem(null);
-              closeModal();
-            }}
-          />
-        </g>
-      ))}
+      {data.map((d) => {
+        const value = xVal(d);
+        const width = Math.abs(xScale(value));
+        const xPosition = value < 0 ? xScale(0) - width : xScale(0);
+
+        return (
+          <g key={yVal(d)}>
+            <rect
+              x={xPosition}
+              y={yScale(yVal(d))}
+              width={width}
+              height={yScale.bandwidth()}
+              className={classNames("mark", {
+                highlighted: yVal(d) === hoveredItem,
+              })}
+              onMouseEnter={() => {
+                setHoveredItem(yVal(d));
+                openModal(d);
+              }}
+              onMouseLeave={() => {
+                setHoveredItem(null);
+                closeModal();
+              }}
+            />
+          </g>
+        );
+      })}
     </>
   );
 };
